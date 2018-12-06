@@ -2,22 +2,22 @@ import os
 path = os.getcwd() + "/"
 # game_start = False
 numRow = 4
-numCol = 8
-w = 210
-h = 196.875
+numCol = 6
+w_grid = 280
+h_grid = 196.875
 class Tile:
 
     def __init__(self, r, c):
         self.r = r
         self.c = c
-        self.w = w
-        self.h = h
+        self.w = w_grid
+        self.h = h_grid
         # self.cover = False # check if the tile is cover
-
+    
     def cover(self):
         noStroke()
-        fill(200, 255)
-        rect(self.c * self.w, self.r * self.h, w, h)
+        fill(220, 50)
+        rect(self.c * self.w, self.r * self.h,self.w, self.h)
 
 class Melody:
 
@@ -34,14 +34,14 @@ class Melody:
         return False
 
     def show(self):
-        r = mouseY // h
-        c = mouseX // w
+        r = mouseY // h_grid
+        c = mouseX // w_grid
         g = self.getTile(r, c)
         g.cover()
-        println(g.r)
+
 m = Melody()
 def setup():
-    fullScreen()
+    fullScreen( )
     global font
     font = createFont("Bellefair-Regular.ttf", 32)
     global game_start
@@ -60,10 +60,11 @@ def draw():
         if ins:
             drawIns()
     else:
+        background(151, 202, 203)
         # println(m.grid)
         m.show()
         # draw
-        background(151, 202, 203)
+        
         noStroke()
         fill(255)
         rect(0, h, width, height - h)
