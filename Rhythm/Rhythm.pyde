@@ -5,8 +5,9 @@ numRow = 4
 numCol = 6
 w_grid = 280
 h_grid = 196.875
-class Tile:
+c_list = [color(151, 202, 203),color(232,80,120),color(87,79,86),color(58,134,151),color(219,97,133),color(240,213,202),color(77,167,157)]
 
+class Tile:
     def __init__(self, r, c):
         self.r = r
         self.c = c
@@ -37,7 +38,9 @@ class Melody:
         r = mouseY // h_grid
         c = mouseX // w_grid
         g = self.getTile(r, c)
-        g.cover()
+        if g != False:
+            g.cover()
+
 
 m = Melody()
 def setup():
@@ -52,7 +55,8 @@ def setup():
     h = 3 * height / 4
     global w
     w = width
-
+    global c_num
+    c_num = 0
 def draw():
     if game_start == False:
         gstart()
@@ -60,7 +64,11 @@ def draw():
         if ins:
             drawIns()
     else:
-        background(151, 202, 203)
+        if frameCount% 1000 == 0:
+            global c_num
+            c_num+=1
+        global c_num
+        background(c_list[c_num%7])
         # println(m.grid)
         m.show()
         # draw
