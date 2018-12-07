@@ -1,3 +1,6 @@
+add_library('minim')
+
+
 import os
 path = os.getcwd() + "/"
 # game_start = False
@@ -6,27 +9,37 @@ numCol = 6
 w_grid = 280
 h_grid = 196.875
 c_list = [color(151, 202, 203),color(232,80,120),color(87,79,86),color(58,134,151),color(219,97,133),color(240,213,202),color(77,167,157)]
-
+audio = Minim(this)
+out = None
+kick = None
+snare = None
+hat = None
+kick = audio.loadSample(path+"data/BD.wav")
+snare = audio.loadSample(path+"data/SD.wav")
+hat = audio.loadSample(path+"data/CHH.wav")
 class Tile:
-    def __init__(self, r, c):
+    def __init__(self, r, c,v):
         self.r = r
         self.c = c
         self.w = w_grid
         self.h = h_grid
+        self.v = v
         # self.cover = False # check if the tile is cover
     
     def cover(self):
         noStroke()
-        fill(220, 50)
+        fill(220, 80)
         rect(self.c * self.w, self.r * self.h,self.w, self.h)
 
 class Melody:
 
     def __init__(self):
         self.grid = []
+        cnt = 0
         for r in range(numRow):
             for c in range(numCol):
-                self.grid.append(Tile(r, c))
+                self.grid.append(Tile(r, c,cnt))
+                cnt+=1
 
     def getTile(self, r, c):
         for g in self.grid:
@@ -34,6 +47,13 @@ class Melody:
                 return g
         return False
 
+    def clicked(self):
+        r = mouseY // h_grid
+        c = mouseX // w_grid
+        g = self.getTile(r,c)
+        if g.v == 0:
+            kick.trigger()
+    
     def show(self):
         r = mouseY // h_grid
         c = mouseX // w_grid
@@ -57,6 +77,12 @@ def setup():
     w = width
     global c_num
     c_num = 0
+   
+    # set up for minim library
+    global out
+    out = audio.getLineOut()
+    out.setTempo(96)
+
 def draw():
     if game_start == False:
         gstart()
@@ -74,7 +100,7 @@ def draw():
         # draw
         
         noStroke()
-        fill(255)
+        fill(220,100)
         rect(0, h, width, height - h)
 def gstart():
     background(151, 202, 203)
@@ -112,3 +138,9 @@ def drawIns():
     rect(width / 2, height / 2, 500, 100)
     fill(255)
     text("click on the screen or press keys", width / 2, height / 2)
+
+def animate1():
+    pass
+    
+def mouseClicked():
+    m.clicked()
