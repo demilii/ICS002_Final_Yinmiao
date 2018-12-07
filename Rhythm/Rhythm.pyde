@@ -1,9 +1,6 @@
 add_library('minim')
-
-
 import os
 path = os.getcwd() + "/"
-# game_start = False
 numRow = 4
 numCol = 6
 w_grid = 280
@@ -17,6 +14,9 @@ hat = None
 kick = audio.loadSample(path+"data/BD.wav")
 snare = audio.loadSample(path+"data/SD.wav")
 hat = audio.loadSample(path+"data/CHH.wav")
+bgm = audio.loadFile(path+"data/bgm.mp3")
+
+
 class Tile:
     def __init__(self, r, c,v):
         self.r = r
@@ -77,28 +77,32 @@ def setup():
     w = width
     global c_num
     c_num = 0
-   
+    global gcnt
+    gcnt = 0
     # set up for minim library
     global out
     out = audio.getLineOut()
-    out.setTempo(96)
-
+    out.setTempo(125)
+    # bgm.loop()
+    # bgm.setGain(0)
 def draw():
     if game_start == False:
+        bgm.setGain(0)
         gstart()
         g_boolean()
         if ins:
             drawIns()
     else:
+
         if frameCount% 1000 == 0:
             global c_num
             c_num+=1
         global c_num
         background(c_list[c_num%7])
         # println(m.grid)
-        m.show()
-        # draw
+        # bgm.loop()
         
+        m.show()
         noStroke()
         fill(220,100)
         rect(0, h, width, height - h)
@@ -144,3 +148,7 @@ def animate1():
     
 def mouseClicked():
     m.clicked()
+    global game_start,gcnt
+    if game_start and gcnt == 0:
+        bgm.loop()
+        gcnt+=1
