@@ -18,6 +18,8 @@ bgm = audio.loadFile(path+"data/bg.mp3")
 s1 = audio.loadSample(path+"data/s1.wav")
 s2 = audio.loadSample(path+"data/s2.wav")
 s3 = audio.loadSample(path+"data/s3_1.wav")
+
+a1 = False
 class Tile:
     def __init__(self, r, c,v):
         self.r = r
@@ -53,6 +55,10 @@ class Melody:
         c = mouseX // w_grid
         g = self.getTile(r,c)
         if g.v == 0 :
+            global a1
+            a1 = True
+            global st1
+            st1 = millis()
             s1.trigger()
         if g.v == 1:
             s2.trigger()
@@ -111,6 +117,13 @@ def draw():
         noStroke()
         fill(220,100)
         rect(0, h, width, height - h)
+        global a1
+        if a1:
+            animate1()
+            global st1
+            if millis()-st1 >400:
+                global a1
+                a1 = False
 def gstart():
     background(151, 202, 203)
     textAlign(CENTER)
@@ -149,7 +162,13 @@ def drawIns():
     text("click on the screen or press keys", width / 2, height / 2)
 
 def animate1():
-    pass
+    for i in range(3):
+        a = random(width)
+        b = random(height)
+        stroke(random(255),random(255),random(255),250)
+        strokeWeight(4)
+        noFill()
+        rect(a, b, 50, 50)
     
 def mouseClicked():
     m.clicked()
@@ -157,3 +176,11 @@ def mouseClicked():
     if game_start and gcnt == 0:
         bgm.loop()
         gcnt+=1
+
+def keyPressed():
+    if key == 'a':
+        s1.trigger()
+        global a1
+        a1 = True
+        global st1
+        st1 = millis()
