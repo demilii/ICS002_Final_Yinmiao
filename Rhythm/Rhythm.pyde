@@ -14,9 +14,10 @@ hat = None
 kick = audio.loadSample(path+"data/BD.wav")
 snare = audio.loadSample(path+"data/SD.wav")
 hat = audio.loadSample(path+"data/CHH.wav")
-bgm = audio.loadFile(path+"data/bgm.mp3")
-
-
+bgm = audio.loadFile(path+"data/bg.mp3")
+s1 = audio.loadSample(path+"data/s1.wav")
+s2 = audio.loadSample(path+"data/s2.wav")
+s3 = audio.loadSample(path+"data/s3_1.wav")
 class Tile:
     def __init__(self, r, c,v):
         self.r = r
@@ -51,8 +52,13 @@ class Melody:
         r = mouseY // h_grid
         c = mouseX // w_grid
         g = self.getTile(r,c)
-        if g.v == 0:
-            kick.trigger()
+        if g.v == 0 :
+            s1.trigger()
+        if g.v == 1:
+            s2.trigger()
+            
+        if g.v == 2:
+            s3.trigger()
     
     def show(self):
         r = mouseY // h_grid
@@ -87,7 +93,6 @@ def setup():
     # bgm.setGain(0)
 def draw():
     if game_start == False:
-        bgm.setGain(0)
         gstart()
         g_boolean()
         if ins:
