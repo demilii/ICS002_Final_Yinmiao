@@ -14,10 +14,10 @@ hat = None
 kick = audio.loadSample(path+"data/BD.wav")
 snare = audio.loadSample(path+"data/SD.wav")
 hat = audio.loadSample(path+"data/CHH.wav")
-bgm = audio.loadFile(path+"data/bg.mp3")
+bgm = audio.loadFile(path+"data/bgm.mp3")
 s1 = audio.loadSample(path+"data/s1.wav")
 s2 = audio.loadSample(path+"data/s2.wav")
-s3 = audio.loadSample(path+"data/s3_1.wav")
+s3 = audio.loadSample(path+"data/s3.wav")
 
 a1 = False
 global a2r 
