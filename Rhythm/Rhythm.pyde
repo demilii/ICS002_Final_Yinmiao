@@ -18,35 +18,47 @@ bgm = audio.loadFile(path+"data/bgm.mp3")
 s1 = audio.loadSample(path+"data/s1.wav")
 s2 = audio.loadSample(path+"data/s2.wav")
 s3 = audio.loadSample(path+"data/s3.wav")
-
+s4 = audio.loadSample(path+"data/s4.wav")
+s5 = audio.loadSample(path+"data/s5.wav")
+s6 = audio.loadSample(path+"data/s6.wav")
+s7 = audio.loadSample(path+"data/s7.wav")
+s8 = audio.loadSample(path+"data/s8.wav")
+s9 = audio.loadSample(path+"data/s9.wav")
+s10 = audio.loadSample(path+"data/s10.wav")
+s11 = audio.loadSample(path+"data/s11.wav")
+s12 = audio.loadSample(path+"data/s12.wav")
 a1 = False
 global a2r 
 a2r = 50
 a2 = False
 a3 = False
+a4 = False
+a5 = False
+a6 = False
 startAngle = 0
-# class for each grid of rhythm machine
-class Rect:
-    def __init__(self,r,c):
-        self.r = r
-        self.c = c
-        self.w = 28
-        self.h = 60
-        self.cover = False
+angle_4 = 0
+# # class for each grid of rhythm machine
+# class Rect:
+#     def __init__(self,r,c):
+#         self.r = r
+#         self.c = c
+#         self.w = 28
+#         self.h = 60
+#         self.cover = False
         
-    def display(self):
-        if self.cover == False:
-            noStroke()
-            fill(255,150)
-        else:
-            noStroke()
-            fill(100,200)
+#     def display(self):
+#         if self.cover == False:
+#             noStroke()
+#             fill(255,150)
+#         else:
+#             noStroke()
+#             fill(100,200)
             
-        rect(self.r,self.c,self.w,self.h)
+#         rect(self.r,self.c,self.w,self.h)
         
-# drum machine
-class drum:
-    pass
+# # drum machine
+# class drum:
+#     pass
 
 class Tile:
     def __init__(self, r, c,v):
@@ -82,21 +94,41 @@ class Melody:
         r = mouseY // h_grid
         c = mouseX // w_grid
         g = self.getTile(r,c)
-        if g.v == 0 :
-            global a1
-            a1 = True
-            global st1
-            st1 = millis()
-            s1.trigger()
-        if g.v == 1:
-            s2.trigger()
-            global a2
-            a2 = True
-        if g.v == 2:
-            s3.trigger()
-            global a3,st3
-            a3 = True
-            st3 = millis()
+        if g:
+            
+            if g.v == 0 :
+                global a1
+                a1 = True
+                global st1
+                st1 = millis()
+                s1.trigger()
+            if g.v == 1:
+                s2.trigger()
+                global a2
+                a2 = True
+            if g.v == 2:
+                s3.trigger()
+                global a3,st3
+                a3 = True
+                st3 = millis()
+            if g.v == 3:
+                s4.trigger()
+                global a4
+                a4 = True
+                
+            if g.v == 4:
+                s5.trigger()
+                global a5
+                a5 = True
+                global st5
+                st5 = millis()
+                
+            if g.v == 5:
+                s6.trigger()
+                global a6
+                a6 = True
+                global st6
+                st6 = millis()
     
     def show(self):
         r = mouseY // h_grid
@@ -127,8 +159,6 @@ def setup():
     global out
     out = audio.getLineOut()
     out.setTempo(125)
-    # bgm.loop()
-    # bgm.setGain(0)
 def draw():
     if game_start == False:
         gstart()
@@ -166,7 +196,23 @@ def draw():
             if millis()-st3 >1000:
                 global a3
                 a3 = False
+                
+        if a4:
+            animate4(900,400,[color(190,211,168),color(74,90,107),color(234,159,169),color(233,155,100)])
 
+        if a5:
+            animate5([600,400,800],[200,500,650],c_list[(c_num+2)%7])
+            global st5
+            if millis()-st5>1000:
+                global a5
+                a5 = False
+                
+        if a6:
+            animate6(300,700,PI/16,c_list[4])
+            global st6
+            if millis()-st6 >800:
+                global a6
+                a6 = False
 def gstart():
     background(151, 202, 203)
     textAlign(CENTER)
@@ -229,7 +275,25 @@ def keyPressed():
         global a3,st3
         a3 = True
         st3 = millis()
-
+    if key == 'd':
+        s4.trigger()
+        global a4
+        a4 = True
+        
+    if key == 'e':
+        s5.trigger()
+        global a5
+        a5 = True
+        global st5
+        st5 = millis()
+        
+    if key == 'f':
+        s6.trigger()
+        global a6
+        a6 = True
+        global st6 
+        st6 = millis()
+        
 def animate1():
     for i in range(3):
         a = random(width)
@@ -262,3 +326,91 @@ def animate3(scl,c):
         angle+=.1
         
     startAngle += .02
+    
+def animate4(x,y,c):
+    
+    global angle_4
+    
+    with pushStyle():
+        noFill()
+        strokeWeight(10)
+        stroke(c[0])
+        translate(x,y)
+        rotate(angle_4)
+        rectMode(CENTER)  
+        rect(0,0,300,300)
+    # noFill()
+    # strokeWeight(10)
+    # stroke(c[0])
+    # rectMode(CENTER)   
+    # translate(x[0],y[0])
+    # rotate(angle_4)
+    # rect(0,0,200,200)
+    # popMatrix()
+
+    with pushStyle():
+        noFill()
+        strokeWeight(10)
+        stroke(c[1])
+        translate(0,0)
+        rotate(angle_4)
+        rectMode(CENTER)  
+        rect(0,0,300,300)
+    # popStyle()
+    with pushStyle():
+        noFill()
+        strokeWeight(10)
+        stroke(c[2])
+        translate(0,0)
+        rotate(angle_4)
+        rectMode(CENTER)  
+        rect(0,0,280,280)
+    with pushStyle():
+        noFill()
+        strokeWeight(10)
+        stroke(c[3])
+        translate(0,0)
+        rotate(angle_4)
+        rectMode(CENTER)  
+        rect(0,0,280,280)
+    angle_4 += PI/200
+   
+    
+    # for i in range(len(x)):
+    #     stroke(c[i])
+    #     pushStyle()
+    #     rectMode(CENTER)
+    #     translate(x[i],y[i])
+    #     rotate(angle_4)
+    #     rect(0,0,200,200)
+    #     popStyle()
+    
+    
+    if angle_4 > PI/2:
+        
+        global a4
+        a4 = False
+        angle_4 = 0
+        
+        
+def animate5(x,y,c):
+    noFill()
+    strokeWeight(10)
+    stroke(c,random(255))
+    global st5
+    with beginShape():
+        for i in range(len(x)):
+            vertex(x[i],y[i])
+        vertex(x[0],y[0])
+        
+def animate6(x,y,a,c):
+    strokeWeight(80)
+    pushStyle()
+    stroke(c)
+    translate(x,y)
+    rotate(a)
+    line(-200,-200,+200,+200)
+    line(-200,+200,+200,-200)
+    popStyle()
+    
+    
