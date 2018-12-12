@@ -35,6 +35,7 @@ a3 = False
 a4 = False
 a5 = False
 a6 = False
+a7 = False
 startAngle = 0
 angle_4 = 0
 # # class for each grid of rhythm machine
@@ -96,39 +97,128 @@ class Melody:
         g = self.getTile(r,c)
         if g:
             
-            if g.v == 0 :
+            if g.v == 0 and game_start:
                 global a1
                 a1 = True
                 global st1
                 st1 = millis()
                 s1.trigger()
-            if g.v == 1:
+            if g.v == 1 and game_start:
                 s2.trigger()
                 global a2
                 a2 = True
-            if g.v == 2:
+            if g.v == 2 and game_start:
                 s3.trigger()
                 global a3,st3
                 a3 = True
                 st3 = millis()
-            if g.v == 3:
+            if g.v == 3 and game_start:
                 s4.trigger()
                 global a4
                 a4 = True
                 
-            if g.v == 4:
-                s5.trigger()
+            if g.v == 4 and game_start:
+                s9.trigger()
                 global a5
                 a5 = True
                 global st5
                 st5 = millis()
                 
-            if g.v == 5:
+            if g.v == 5 and game_start:
                 s6.trigger()
                 global a6
                 a6 = True
                 global st6
                 st6 = millis()
+            if g.v == 6 and game_start:
+                s7.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 7 and game_start:
+                s3.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 8 and game_start:
+                s9.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 9 and game_start:
+                s10.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 10 and game_start:
+                s11.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 11 and game_start:
+                s1.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 12 and game_start:
+                s2.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 13 and game_start:
+                s6.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 14 and game_start:
+                s7.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 15 and game_start:
+                s1.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 16 and game_start:
+                s10.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 17 and game_start:
+                s9.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 18 and game_start:
+                s11.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 19 and game_start:
+                s4.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 20 and game_start:
+                s11.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 21 and game_start:
+                s2.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 22 and game_start:
+                s1.trigger()
+                global a7
+                a7 = True
+                
+            if g.v == 23 and game_start:
+                s4.trigger()
+                global a7
+                a7 = True
     
     def show(self):
         r = mouseY // h_grid
@@ -243,13 +333,14 @@ def g_boolean():
             ins = False
 
 def drawIns():
+    pushStyle()
     noStroke()
     fill(151, 202, 203)
     rectMode(CENTER)
     rect(width / 2, height / 2, 500, 100)
     fill(255)
-    text("click on the screen or press keys", width / 2, height / 2)
-
+    text("click on the screen or press keys from 'a' to 'z'", width / 2, height / 2)
+    popStyle()
 def mouseClicked():
     m.clicked()
     global game_start,gcnt
