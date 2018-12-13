@@ -57,28 +57,84 @@ a25 = False
 a26 = False
 startAngle = 0
 angle_4 = 0
-# # class for each grid of rhythm machine
-# class Rect:
-#     def __init__(self,r,c):
-#         self.r = r
-#         self.c = c
-#         self.w = 28
-#         self.h = 60
-#         self.cover = False
+# class for each grid of rhythm machine
+class Rect:
+    def __init__(self,r,c):
+        self.r = r 
+        self.c = c
+        self.w = 28
+        self.h = 45
+        self.cover = False 
         
-#     def display(self):
-#         if self.cover == False:
-#             noStroke()
-#             fill(255,150)
-#         else:
-#             noStroke()
-#             fill(100,200)
+    def display(self):
+        if self.cover == False:
+            noStroke()
+            fill(255,150)
+        else:
+            noStroke()
+            fill(100,200)
             
-#         rect(self.r,self.c,self.w,self.h)
+        rect(391+self.c*58,790+self.r*60,self.w,self.h)
         
-# # drum machine
-# class drum:
-#     pass
+# drum machine
+class drum:
+    def __init__(self):
+        self.k = []
+        self.s = []
+        self.h = []
+        for i in range(16):
+            self.k.append(Rect(1,i))
+            self.s.append(Rect(2,i))
+            self.h.append(Rect(3,i))
+            
+    def getRect(self,r,c):
+        if r == 0:
+            for k in self.k:
+                if c == k.c:
+                    return k
+            return False
+        elif r == 1:
+            for s in self.s:
+                if c == s.c:
+                    return s
+            return False
+        elif r == 2:
+            for h in self.h:
+                if c == h.c:
+                    return h
+            return False
+        
+    def clicked(self):
+        
+        c = (mouseX - 391)//58
+        r = (mouseY - 850)//60
+        Rect= self.getRect(r,c)
+        if Rect:
+            if Rect.cover == True:
+                Rect.cover = False
+            else:
+                Rect.cover = True
+    def sound(self):
+        for i in range(len(self.k)):
+            if self.k[i].cover == True and frameCount%(464) == 29*(i+1):
+                kick.trigger()
+                
+        for i in range(len(self.s)):
+            if self.s[i].cover == True and frameCount%(464) == 29*(i+1):
+                snare.trigger()
+                
+        for i in range(len(self.h)):
+            if self.h[i].cover == True and frameCount%(464) == 29*(i+1):
+                hat.trigger()
+
+    def show(self):
+        self.sound()
+        for k in self.k:
+            k.display()
+        for s in self.s:
+            s.display()
+        for h in self.h:
+            h.display()
 
 class Tile:
     def __init__(self, r, c,v):
@@ -95,7 +151,6 @@ class Tile:
         rect(self.c * self.w, self.r * self.h,self.w, self.h)
 
 class Melody:
-
     def __init__(self):
         self.grid = []
         cnt = 0
@@ -273,8 +328,8 @@ class Melody:
         if g != False:
             g.cover()
 
-
 m = Melody()
+d = drum()
 def setup():
     fullScreen( )
     global font
@@ -295,14 +350,15 @@ def setup():
     global out
     out = audio.getLineOut()
     out.setTempo(125)
+    
 def draw():
     if game_start == False:
         gstart()
         g_boolean()
         if ins:
             drawIns()
+            
     else:
-
         if frameCount% 1000 == 0:
             global c_num
             c_num+=1
@@ -315,6 +371,7 @@ def draw():
         noStroke()
         fill(220,100)
         rect(0, h, width, height - h)
+        d.show()
         global a1,a2,a3
         if a1:
             animate1()
@@ -497,13 +554,15 @@ def drawIns():
     fill(255)
     text("click on the screen or press keys from 'a' to 'z'", width / 2, height / 2)
     popStyle()
+    
 def mouseClicked():
     m.clicked()
+    d.clicked()
     global game_start,gcnt
     if game_start and gcnt == 0:
         bgm.loop()
         gcnt+=1
-
+    
 def keyPressed():
     if key == 'a':
         s1.trigger()
@@ -699,13 +758,10 @@ def animate3(scl,c):
         strokeWeight(10)
         point(i,y)
         angle+=.1
-        
     startAngle += .02
     
 def animate4(x,y,c):
-    
     global angle_4
-    
     with pushStyle():
         noFill()
         strokeWeight(10)
@@ -742,14 +798,12 @@ def animate4(x,y,c):
         rect(0,0,280,280)
     angle_4 += PI/200
     if angle_4 > PI/2:
-        
         global a4,a8,a18,a24
         a4 = False
         a8 = False
         a18 = False
         a24 = False
-        angle_4 = 0
-        
+        angle_4 = 0        
         
 def animate5(x,y,c):
     noFill()
@@ -770,5 +824,4 @@ def animate6(x,y,a,c):
     line(-200,-200,+200,+200)
     line(-200,+200,+200,-200)
     popStyle()
-    
     
